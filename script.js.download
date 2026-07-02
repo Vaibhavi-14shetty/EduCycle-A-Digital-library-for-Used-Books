@@ -1,0 +1,1245 @@
+// Global variables
+let currentUser = null;
+let books = [];
+let chatContacts = [];
+let currentChat = null;
+
+// Sample books data - All books are FREE for educational purposes
+const sampleBooks = [
+    // College Books
+    {
+        id: 1,
+        title: "Introduction to Computer Science",
+        author: "John Smith",
+        subject: "computer-science",
+        educationLevel: "college",
+        classSemester: "semester-1",
+        price: 0,
+        description: "Free Computer Science book. Excellent condition, barely used. Perfect for first semester students.",
+        image: "https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=300&h=200&fit=crop&crop=center",
+        uploadedBy: "user1",
+        uploadedAt: "2024-01-15"
+    },
+    {
+        id: 2,
+        title: "Calculus: Early Transcendentals",
+        author: "James Stewart",
+        subject: "mathematics",
+        educationLevel: "college",
+        classSemester: "semester-2",
+        price: 0,
+        description: "Free Mathematics book. Good condition with some highlighting. Includes practice problems.",
+        image: "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=300&h=200&fit=crop&crop=center",
+        uploadedBy: "user2",
+        uploadedAt: "2024-01-10"
+    },
+    {
+        id: 3,
+        title: "Physics for Scientists and Engineers",
+        author: "Raymond A. Serway",
+        subject: "physics",
+        educationLevel: "college",
+        classSemester: "semester-1",
+        price: 0,
+        description: "Free Physics book. Like new condition. No markings or damage.",
+        image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&h=200&fit=crop&crop=center",
+        uploadedBy: "user3",
+        uploadedAt: "2024-01-12"
+    },
+    {
+        id: 4,
+        title: "Organic Chemistry",
+        author: "Paula Yurkanis Bruice",
+        subject: "chemistry",
+        educationLevel: "college",
+        classSemester: "semester-3",
+        price: 0,
+        description: "Free Chemistry book. Some wear but still usable. Donated for educational purpose.",
+        image: "https://images.unsplash.com/photo-1512820790803-83ca734da794?w=300&h=200&fit=crop&crop=center",
+        uploadedBy: "user4",
+        uploadedAt: "2024-01-08"
+    },
+    // School Books
+    {
+        id: 5,
+        title: "Mathematics for Class 10",
+        author: "NCERT",
+        subject: "mathematics-school",
+        educationLevel: "school",
+        classSemester: "class-10",
+        price: 0,
+        description: "Free NCERT Mathematics textbook for Class 10. Good condition with minimal wear.",
+        image: "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=300&h=200&fit=crop&crop=center",
+        uploadedBy: "user5",
+        uploadedAt: "2024-01-20"
+    },
+    {
+        id: 6,
+        title: "Science Textbook Class 8",
+        author: "NCERT",
+        subject: "science-school",
+        educationLevel: "school",
+        classSemester: "class-8",
+        price: 0,
+        description: "Free NCERT Science book for Class 8. Some highlighting but in good condition.",
+        image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&h=200&fit=crop&crop=center",
+        uploadedBy: "user6",
+        uploadedAt: "2024-01-18"
+    },
+    {
+        id: 7,
+        title: "English Literature Class 9",
+        author: "NCERT",
+        subject: "english",
+        educationLevel: "school",
+        classSemester: "class-9",
+        price: 0,
+        description: "Free NCERT English textbook for Class 9. Excellent condition.",
+        image: "https://images.unsplash.com/photo-1512820790803-83ca734da794?w=300&h=200&fit=crop&crop=center",
+        uploadedBy: "user7",
+        uploadedAt: "2024-01-16"
+    },
+    {
+        id: 8,
+        title: "Hindi Textbook Class 7",
+        author: "NCERT",
+        subject: "hindi",
+        educationLevel: "school",
+        classSemester: "class-7",
+        price: 0,
+        description: "Free NCERT Hindi book for Class 7. Good condition with some notes.",
+        image: "https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=300&h=200&fit=crop&crop=center",
+        uploadedBy: "user8",
+        uploadedAt: "2024-01-14"
+    },
+    {
+        id: 9,
+        title: "Social Studies Class 6",
+        author: "NCERT",
+        subject: "social-studies",
+        educationLevel: "school",
+        classSemester: "class-6",
+        price: 0,
+        description: "Free NCERT Social Studies book for Class 6. Like new condition.",
+        image: "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=300&h=200&fit=crop&crop=center",
+        uploadedBy: "user9",
+        uploadedAt: "2024-01-12"
+    },
+    {
+        id: 10,
+        title: "Physics Class 11",
+        author: "NCERT",
+        subject: "physics-school",
+        educationLevel: "school",
+        classSemester: "class-11",
+        price: 0,
+        description: "Free NCERT Physics textbook for Class 11. Excellent condition.",
+        image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&h=200&fit=crop&crop=center",
+        uploadedBy: "user10",
+        uploadedAt: "2024-01-10"
+    },
+    {
+        id: 11,
+        title: "Chemistry Class 12",
+        author: "NCERT",
+        subject: "chemistry-school",
+        educationLevel: "school",
+        classSemester: "class-12",
+        price: 0,
+        description: "Free NCERT Chemistry textbook for Class 12. Very good condition.",
+        image: "https://images.unsplash.com/photo-1512820790803-83ca734da794?w=300&h=200&fit=crop&crop=center",
+        uploadedBy: "user11",
+        uploadedAt: "2024-01-08"
+    },
+    {
+        id: 12,
+        title: "Biology Class 10",
+        author: "NCERT",
+        subject: "biology-school",
+        educationLevel: "school",
+        classSemester: "class-10",
+        price: 0,
+        description: "Free NCERT Biology book for Class 10. Donated for educational purpose.",
+        image: "https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=300&h=200&fit=crop&crop=center",
+        uploadedBy: "user12",
+        uploadedAt: "2024-01-06"
+    },
+    // Sample books uploaded by demo user for testing profile
+    {
+        id: 13,
+        title: "Advanced Mathematics",
+        author: "Demo User",
+        subject: "mathematics",
+        educationLevel: "college",
+        classSemester: "semester-3",
+        price: 0,
+        description: "Advanced Mathematics textbook for college students. Excellent condition.",
+        image: "https://images.unsplash.com/photo-1509228468518-180dd4864904?w=300&h=200&fit=crop&crop=center",
+        uploadedBy: "demo-user",
+        uploadedAt: "2024-01-25"
+    },
+    {
+        id: 14,
+        title: "Programming Fundamentals",
+        author: "Demo User",
+        subject: "computer-science",
+        educationLevel: "college",
+        classSemester: "semester-2",
+        price: 0,
+        description: "Introduction to programming concepts. Perfect for beginners.",
+        image: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=300&h=200&fit=crop&crop=center",
+        uploadedBy: "demo-user",
+        uploadedAt: "2024-01-24"
+    },
+    {
+        id: 15,
+        title: "English Grammar Class 8",
+        author: "Demo User",
+        subject: "english",
+        educationLevel: "school",
+        classSemester: "class-8",
+        price: 0,
+        description: "NCERT English Grammar book for Class 8. Good condition with minimal notes.",
+        image: "https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=300&h=200&fit=crop&crop=center",
+        uploadedBy: "demo-user",
+        uploadedAt: "2024-01-23"
+    }
+];
+
+// Initialize the app
+document.addEventListener('DOMContentLoaded', function() {
+    initializeApp();
+});
+
+function initializeApp() {
+    // Load sample books
+    books = [...sampleBooks];
+    
+    // Initialize sections
+    loadBooks();
+    initializeUploadForm();
+    initializeChat();
+    initializeProfile();
+    initializeSearchFilters();
+    initializeEducationLevelFilter();
+    
+    // Add scroll functionality
+    addScrollFunctionality();
+}
+
+// Books Section
+function loadBooks() {
+    const booksGrid = document.getElementById('books-grid');
+    if (!booksGrid) return;
+
+    booksGrid.innerHTML = '';
+    
+    books.forEach(book => {
+        const bookCard = createBookCard(book);
+        booksGrid.appendChild(bookCard);
+    });
+}
+
+function createBookCard(book) {
+    const card = document.createElement('div');
+    card.className = 'book-card';
+    
+    const priceText = book.price === 0 ? 'Free' : `₹${book.price}`;
+    const educationLevel = book.educationLevel === 'school' ? 'School' : 'College';
+    const classSemesterText = book.educationLevel === 'school' ? 
+        `Class ${book.classSemester.replace('class-', '')}` : 
+        `Semester ${book.classSemester.replace('semester-', '')}`;
+    
+    card.innerHTML = `
+        <img src="${book.image}" alt="${book.title}" class="book-image">
+        <div class="book-info">
+            <h3 class="book-title">${book.title}</h3>
+            <p class="book-author">by ${book.author}</p>
+            <div class="book-details">
+                <span class="book-subject">${getSubjectName(book.subject)}</span>
+                <span class="book-level">${educationLevel}</span>
+                <span class="book-class-semester">${classSemesterText}</span>
+            </div>
+            <p class="book-price">${priceText}</p>
+            <div class="book-actions">
+                <button class="btn-request" onclick="requestBook(${book.id})">Request Book</button>
+                <button class="btn-chat" onclick="startChat('${book.uploadedBy}')">Chat</button>
+            </div>
+        </div>
+    `;
+    
+    return card;
+}
+
+function getSubjectName(subject) {
+    const subjects = {
+        // College subjects
+        'computer-science': 'Computer Science',
+        'mathematics': 'Mathematics',
+        'physics': 'Physics',
+        'chemistry': 'Chemistry',
+        'biology': 'Biology',
+        'engineering': 'Engineering',
+        // School subjects
+        'mathematics-school': 'Mathematics',
+        'science-school': 'Science',
+        'social-studies': 'Social Studies',
+        'english': 'English',
+        'hindi': 'Hindi',
+        'sanskrit': 'Sanskrit',
+        'physics-school': 'Physics',
+        'chemistry-school': 'Chemistry',
+        'biology-school': 'Biology'
+    };
+    return subjects[subject] || subject;
+}
+
+function requestBook(bookId) {
+    if (!currentUser) {
+        alert('Please sign in to request books');
+        openAuthModal('signin');
+        return;
+    }
+    
+    const book = books.find(b => b.id === bookId);
+    if (book) {
+        // Add the book owner to chat contacts if not already there
+        const ownerId = book.uploadedBy;
+        const ownerName = getOwnerName(ownerId);
+        
+        if (!chatContacts.find(contact => contact.id === ownerId)) {
+            chatContacts.push({
+                id: ownerId,
+                name: ownerName,
+                lastMessage: 'Book request sent',
+                bookTitle: book.title,
+                requestTime: new Date().toLocaleTimeString(),
+                status: 'pending'
+            });
+        }
+        
+        // Update chat UI
+        updateChatUI();
+        
+        // Show success message with option to chat
+        const shouldChat = confirm(`Request sent for "${book.title}"!\n\nWould you like to start chatting with the book owner?`);
+        
+        if (shouldChat) {
+            // Set current chat to the book owner
+            currentChat = ownerId;
+            updateChatUI();
+            
+            // Scroll to chat section
+            document.getElementById('chat').scrollIntoView({ behavior: 'smooth' });
+            
+            // Add initial message to the chat
+            addMessageToChat(ownerId, `Hi! I'm interested in your book "${book.title}". Is it still available?`, 'sent');
+        }
+        
+        // Update the book request status
+        updateBookRequestStatus(bookId, 'requested');
+    }
+}
+
+// Get owner name for display
+function getOwnerName(ownerId) {
+    if (ownerId === 'demo-user') {
+        return 'Demo User';
+    }
+    
+    // For other users, generate a name based on ID
+    const userNames = {
+        'user1': 'John Smith',
+        'user2': 'Sarah Johnson', 
+        'user3': 'Mike Chen',
+        'user4': 'Emily Davis',
+        'user5': 'Alex Kumar',
+        'user6': 'Priya Singh',
+        'user7': 'David Wilson',
+        'user8': 'Lisa Brown',
+        'user9': 'Raj Patel',
+        'user10': 'Anna Garcia',
+        'user11': 'Tom Anderson',
+        'user12': 'Sofia Martinez'
+    };
+    
+    return userNames[ownerId] || `User ${ownerId}`;
+}
+
+// Update book request status
+function updateBookRequestStatus(bookId, status) {
+    const book = books.find(b => b.id === bookId);
+    if (book) {
+        book.requestStatus = status;
+        book.requestedBy = currentUser.id;
+        book.requestTime = new Date().toISOString();
+    }
+}
+
+function startChat(userId) {
+    if (!currentUser) {
+        alert('Please sign in to start chatting');
+        openAuthModal('signin');
+        return;
+    }
+    
+    // Add to chat contacts if not already there
+    if (!chatContacts.find(contact => contact.id === userId)) {
+        chatContacts.push({
+            id: userId,
+            name: getOwnerName(userId),
+            lastMessage: 'Start a conversation...',
+            status: 'active'
+        });
+    }
+    
+    currentChat = userId;
+    updateChatUI();
+    document.getElementById('chat').scrollIntoView({ behavior: 'smooth' });
+}
+
+// Add message to specific chat
+function addMessageToChat(userId, message, type = 'sent') {
+    if (!currentChat || currentChat !== userId) return;
+    
+    const chatMessages = document.getElementById('chat-messages');
+    if (!chatMessages) return;
+    
+    const messageElement = document.createElement('div');
+    messageElement.className = `message ${type}`;
+    
+    const time = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+    
+    messageElement.innerHTML = `
+        <div class="message-content">
+            <p>${message}</p>
+            <span class="message-time">${time}</span>
+        </div>
+    `;
+    
+    chatMessages.appendChild(messageElement);
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+    
+    // Update last message in contacts
+    const contact = chatContacts.find(c => c.id === userId);
+    if (contact) {
+        contact.lastMessage = message.length > 30 ? message.substring(0, 30) + '...' : message;
+        contact.lastMessageTime = time;
+    }
+}
+
+// Upload Section
+function initializeUploadForm() {
+    const uploadForm = document.getElementById('upload-form');
+    if (!uploadForm) return;
+
+    uploadForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        if (!currentUser) {
+            alert('Please sign in to upload books');
+            openAuthModal('signin');
+            return;
+        }
+
+        const formData = new FormData(uploadForm);
+        const bookData = {
+            id: books.length + 1,
+            title: document.getElementById('book-title').value,
+            author: document.getElementById('book-author').value,
+            subject: document.getElementById('book-subject').value,
+            educationLevel: document.getElementById('book-education-level').value,
+            classSemester: document.getElementById('book-class-semester').value,
+            price: parseInt(document.getElementById('book-price').value) || 0,
+            description: document.getElementById('book-description').value,
+            image: 'https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=300&h=200&fit=crop&crop=center',
+            uploadedBy: currentUser.id || 'demo-user',
+            uploadedAt: new Date().toISOString().split('T')[0]
+        };
+
+        books.unshift(bookData);
+        loadBooks();
+        updateUserStatistics(); // Update profile statistics
+        uploadForm.reset();
+        alert('Book uploaded successfully!');
+    });
+}
+
+// Chat Section
+function initializeChat() {
+    const sendButton = document.getElementById('send-message');
+    const messageInput = document.getElementById('message-input');
+    
+    if (sendButton && messageInput) {
+        sendButton.addEventListener('click', sendMessage);
+        messageInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        });
+    }
+    
+    updateChatUI();
+}
+
+function updateChatUI() {
+    const chatContactsElement = document.getElementById('chat-contacts');
+    const chatRecipient = document.getElementById('chat-recipient');
+    const chatMessages = document.getElementById('chat-messages');
+    
+    if (chatContactsElement) {
+        chatContactsElement.innerHTML = '';
+        
+        if (chatContacts.length === 0) {
+            chatContactsElement.innerHTML = `
+                <div class="no-contacts">
+                    <i class="fas fa-comments"></i>
+                    <p>No conversations yet</p>
+                    <small>Request a book to start chatting!</small>
+                </div>
+            `;
+            return;
+        }
+        
+        chatContacts.forEach(contact => {
+            const contactElement = document.createElement('div');
+            contactElement.className = `chat-contact ${currentChat === contact.id ? 'active' : ''}`;
+            
+            const statusIcon = contact.status === 'pending' ? '⏳' : '💬';
+            const timeDisplay = contact.lastMessageTime || contact.requestTime || '';
+            
+            contactElement.innerHTML = `
+                <div class="contact-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="contact-info">
+                    <div class="contact-header">
+                        <h4>${contact.name}</h4>
+                        <span class="contact-time">${timeDisplay}</span>
+                    </div>
+                    <p class="last-message">${statusIcon} ${contact.lastMessage}</p>
+                    ${contact.bookTitle ? `<small class="book-context">About: ${contact.bookTitle}</small>` : ''}
+                </div>
+            `;
+            contactElement.onclick = () => selectChat(contact.id);
+            chatContactsElement.appendChild(contactElement);
+        });
+    }
+    
+    if (chatRecipient) {
+        const currentContact = chatContacts.find(c => c.id === currentChat);
+        chatRecipient.textContent = currentContact ? currentContact.name : 'Select a conversation';
+    }
+    
+    if (chatMessages) {
+        if (currentChat) {
+            loadChatHistory(currentChat);
+        } else {
+            chatMessages.innerHTML = `
+                <div class="chat-placeholder">
+                    <i class="fas fa-comment-dots"></i>
+                    <h3>Welcome to EduCycle Chat</h3>
+                    <p>Select a conversation from the sidebar to start chatting about books!</p>
+                </div>
+            `;
+        }
+    }
+}
+
+// Load chat history for a specific user
+function loadChatHistory(userId) {
+    const chatMessages = document.getElementById('chat-messages');
+    if (!chatMessages) return;
+    
+    // Clear existing messages
+    chatMessages.innerHTML = '';
+    
+    // Add welcome message if it's a new conversation
+    const contact = chatContacts.find(c => c.id === userId);
+    if (contact && contact.status === 'pending') {
+        const welcomeMessage = document.createElement('div');
+        welcomeMessage.className = 'system-message';
+        welcomeMessage.innerHTML = `
+            <div class="system-content">
+                <i class="fas fa-info-circle"></i>
+                <p>Book request sent! You can now chat with ${contact.name} about the book.</p>
+            </div>
+        `;
+        chatMessages.appendChild(welcomeMessage);
+    }
+    
+    // Add some sample messages for demo
+    if (userId !== currentChat) return;
+    
+    // Add initial message if this is a book request
+    if (contact && contact.bookTitle) {
+        setTimeout(() => {
+            addMessageToChat(userId, `Hi! I'm interested in your book "${contact.bookTitle}". Is it still available?`, 'sent');
+            
+            // Simulate owner response after 2 seconds
+            setTimeout(() => {
+                addMessageToChat(userId, `Hi! Yes, the book is still available. Where would you like to meet for pickup?`, 'received');
+            }, 2000);
+        }, 500);
+    }
+}
+
+function selectChat(userId) {
+    currentChat = userId;
+    updateChatUI();
+}
+
+function sendMessage() {
+    if (!currentChat) {
+        alert('Please select a conversation first');
+        return;
+    }
+    
+    const messageInput = document.getElementById('message-input');
+    const message = messageInput.value.trim();
+    
+    if (message) {
+        // Add message to chat
+        addMessageToChat(currentChat, message, 'sent');
+        
+        // Clear input
+        messageInput.value = '';
+        
+        // Update contact status
+        const contact = chatContacts.find(c => c.id === currentChat);
+        if (contact) {
+            contact.status = 'active';
+        }
+        
+        // Simulate response from book owner (for demo)
+        setTimeout(() => {
+            const responses = [
+                "Great! When would you like to meet?",
+                "Sure! I'm available this weekend.",
+                "The book is in good condition. Would you like to see it first?",
+                "Perfect! Let's meet at the college library.",
+                "Yes, it's still available. What time works for you?"
+            ];
+            
+            const randomResponse = responses[Math.floor(Math.random() * responses.length)];
+            addMessageToChat(currentChat, randomResponse, 'received');
+        }, 1500);
+    }
+}
+
+// Profile Section
+function initializeProfile() {
+    const profileMenuItems = document.querySelectorAll('.profile-menu-item');
+    const profileTabs = document.querySelectorAll('.profile-tab');
+    
+    profileMenuItems.forEach(item => {
+        item.addEventListener('click', () => {
+            const tabId = item.dataset.tab;
+            
+            profileMenuItems.forEach(i => i.classList.remove('active'));
+            profileTabs.forEach(t => t.classList.remove('active'));
+            
+            item.classList.add('active');
+            document.getElementById(tabId).classList.add('active');
+        });
+    });
+    
+    // Profile form submission
+    const profileForm = document.querySelector('.profile-form');
+    if (profileForm) {
+        profileForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            if (!currentUser) return;
+            
+            alert('Profile updated successfully!');
+        });
+    }
+}
+
+// Search and Filters
+function initializeSearchFilters() {
+    const searchInput = document.getElementById('search-books');
+    const educationLevelFilter = document.getElementById('education-level-filter');
+    const subjectFilter = document.getElementById('subject-filter');
+    const classSemesterFilter = document.getElementById('class-semester-filter');
+    
+    if (searchInput) {
+        searchInput.addEventListener('input', filterBooks);
+    }
+    
+    if (educationLevelFilter) {
+        educationLevelFilter.addEventListener('change', filterBooks);
+    }
+    
+    if (subjectFilter) {
+        subjectFilter.addEventListener('change', filterBooks);
+    }
+    
+    if (classSemesterFilter) {
+        classSemesterFilter.addEventListener('change', filterBooks);
+    }
+}
+
+function filterBooks() {
+    const searchTerm = document.getElementById('search-books').value.toLowerCase();
+    const educationLevelFilter = document.getElementById('education-level-filter').value;
+    const subjectFilter = document.getElementById('subject-filter').value;
+    const classSemesterFilter = document.getElementById('class-semester-filter').value;
+    
+    const filteredBooks = books.filter(book => {
+        const matchesSearch = book.title.toLowerCase().includes(searchTerm) ||
+                            book.author.toLowerCase().includes(searchTerm);
+        const matchesEducationLevel = !educationLevelFilter || book.educationLevel === educationLevelFilter;
+        const matchesSubject = !subjectFilter || book.subject === subjectFilter;
+        const matchesClassSemester = !classSemesterFilter || book.classSemester === classSemesterFilter;
+        
+        return matchesSearch && matchesEducationLevel && matchesSubject && matchesClassSemester;
+    });
+    
+    displayFilteredBooks(filteredBooks);
+}
+
+function displayFilteredBooks(filteredBooks) {
+    const booksGrid = document.getElementById('books-grid');
+    if (!booksGrid) return;
+
+    booksGrid.innerHTML = '';
+    
+    if (filteredBooks.length === 0) {
+        booksGrid.innerHTML = '<p style="grid-column: 1/-1; text-align: center; padding: 2rem;">No books found matching your criteria.</p>';
+        return;
+    }
+    
+    filteredBooks.forEach(book => {
+        const bookCard = createBookCard(book);
+        booksGrid.appendChild(bookCard);
+    });
+}
+
+// Utility Functions
+function scrollToSection(sectionId) {
+    const section = document.getElementById(sectionId);
+    if (section) {
+        section.scrollIntoView({ behavior: 'smooth' });
+    }
+}
+
+function addScrollFunctionality() {
+    // Smooth scrolling for navigation links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            const target = document.querySelector(this.getAttribute('href'));
+            if (target) {
+                target.scrollIntoView({ behavior: 'smooth' });
+            }
+        });
+    });
+}
+
+// Set current user (called from supabase.js)
+function setCurrentUser(user) {
+    currentUser = user;
+    updateProfileInfo();
+}
+
+// Update profile information
+function updateProfileInfo() {
+    if (!currentUser) return;
+
+    const profileFullName = document.getElementById('profile-full-name');
+    const profileEmail = document.getElementById('profile-email');
+    const editFullName = document.getElementById('edit-full-name');
+    const editEmail = document.getElementById('edit-email');
+    const editCollegeId = document.getElementById('edit-college-id');
+    const editRole = document.getElementById('edit-role');
+
+    if (profileFullName) profileFullName.textContent = currentUser.user_metadata.full_name || 'User';
+    if (profileEmail) profileEmail.textContent = currentUser.email;
+    if (editFullName) editFullName.value = currentUser.user_metadata.full_name || '';
+    if (editEmail) editEmail.value = currentUser.email;
+    if (editCollegeId) editCollegeId.value = currentUser.user_metadata.student_id || '';
+    if (editRole) editRole.value = currentUser.user_metadata.role || 'student';
+
+    // Update user statistics
+    updateUserStatistics();
+}
+
+// Update user statistics
+function updateUserStatistics() {
+    if (!currentUser) return;
+
+    // Count books uploaded by current user
+    const booksUploaded = books.filter(book => book.uploadedBy === currentUser.id || book.uploadedBy === 'demo-user').length;
+    
+    // Count books received (for demo purposes, we'll simulate some)
+    const booksReceived = Math.floor(Math.random() * 5) + 1; // Random number between 1-5 for demo
+    
+    // Update the statistics display
+    const booksDonatedElement = document.getElementById('books-donated');
+    const booksReceivedElement = document.getElementById('books-received');
+    const environmentalImpactElement = document.getElementById('environmental-impact');
+    
+    if (booksDonatedElement) booksDonatedElement.textContent = booksUploaded;
+    if (booksReceivedElement) booksReceivedElement.textContent = booksReceived;
+    if (environmentalImpactElement) {
+        const totalBooks = booksUploaded + booksReceived;
+        const co2Saved = totalBooks * 2.5; // Assuming 2.5kg CO2 saved per book
+        environmentalImpactElement.textContent = `${co2Saved.toFixed(1)} kg CO2`;
+    }
+
+    // Update achievements
+    updateAchievements(booksUploaded, booksReceived);
+
+    // Update my books list
+    updateMyBooksList();
+}
+
+// Update achievements based on user activity
+function updateAchievements(booksUploaded, booksReceived) {
+    // First Upload Achievement
+    const firstUploadCard = document.getElementById('first-upload');
+    const firstUploadStatus = firstUploadCard?.querySelector('.achievement-status');
+    if (booksUploaded >= 1) {
+        firstUploadCard?.classList.add('unlocked');
+        firstUploadCard?.classList.remove('locked');
+        if (firstUploadStatus) {
+            firstUploadStatus.textContent = 'Unlocked';
+            firstUploadStatus.classList.add('unlocked');
+            firstUploadStatus.classList.remove('locked');
+        }
+    }
+
+    // Generous Donor Achievement
+    const generousDonorCard = document.getElementById('generous-donor');
+    const generousDonorStatus = generousDonorCard?.querySelector('.achievement-status');
+    if (booksUploaded >= 5) {
+        generousDonorCard?.classList.add('unlocked');
+        generousDonorCard?.classList.remove('locked');
+        if (generousDonorStatus) {
+            generousDonorStatus.textContent = 'Unlocked';
+            generousDonorStatus.classList.add('unlocked');
+            generousDonorStatus.classList.remove('locked');
+        }
+    }
+
+    // Eco Warrior Achievement
+    const ecoWarriorCard = document.getElementById('eco-warrior');
+    const ecoWarriorStatus = ecoWarriorCard?.querySelector('.achievement-status');
+    const totalBooks = booksUploaded + booksReceived;
+    const co2Saved = totalBooks * 2.5;
+    if (co2Saved >= 10) {
+        ecoWarriorCard?.classList.add('unlocked');
+        ecoWarriorCard?.classList.remove('locked');
+        if (ecoWarriorStatus) {
+            ecoWarriorStatus.textContent = 'Unlocked';
+            ecoWarriorStatus.classList.add('unlocked');
+            ecoWarriorStatus.classList.remove('locked');
+        }
+    }
+}
+
+// Update my books list in profile
+function updateMyBooksList() {
+    if (!currentUser) return;
+
+    const myBooksList = document.getElementById('my-books-list');
+    if (!myBooksList) return;
+
+    const userBooks = books.filter(book => book.uploadedBy === currentUser.id || book.uploadedBy === 'demo-user');
+    
+    if (userBooks.length === 0) {
+        myBooksList.innerHTML = '<p class="no-books">No books uploaded yet</p>';
+        return;
+    }
+
+    myBooksList.innerHTML = '';
+    userBooks.forEach(book => {
+        const bookElement = document.createElement('div');
+        bookElement.className = 'my-book-item';
+        
+        const educationLevel = book.educationLevel === 'school' ? 'School' : 'College';
+        const classSemesterText = book.educationLevel === 'school' ? 
+            `Class ${book.classSemester.replace('class-', '')}` : 
+            `Semester ${book.classSemester.replace('semester-', '')}`;
+        
+        bookElement.innerHTML = `
+            <div class="book-item-content">
+                <img src="${book.image}" alt="${book.title}" class="book-item-image">
+                <div class="book-item-details">
+                    <h4>${book.title}</h4>
+                    <p class="book-author">by ${book.author}</p>
+                    <div class="book-meta">
+                        <span class="book-level">${educationLevel}</span>
+                        <span class="book-class">${classSemesterText}</span>
+                        <span class="book-price">Free</span>
+                    </div>
+                    <p class="book-description">${book.description}</p>
+                    <div class="book-actions">
+                        <button class="btn-edit" onclick="editBook(${book.id})">Edit</button>
+                        <button class="btn-delete" onclick="deleteBook(${book.id})">Delete</button>
+                    </div>
+                </div>
+            </div>
+        `;
+        
+        myBooksList.appendChild(bookElement);
+    });
+}
+
+// Edit book function
+function editBook(bookId) {
+    alert('Edit book functionality will be implemented soon!');
+}
+
+// Delete book function
+function deleteBook(bookId) {
+    if (confirm('Are you sure you want to delete this book?')) {
+        const bookIndex = books.findIndex(book => book.id === bookId);
+        if (bookIndex !== -1) {
+            books.splice(bookIndex, 1);
+            loadBooks();
+            updateMyBooksList();
+            updateUserStatistics();
+            alert('Book deleted successfully!');
+        }
+    }
+}
+
+// Education Level Filter
+function initializeEducationLevelFilter() {
+    const educationLevelFilter = document.getElementById('education-level-filter');
+    const subjectFilter = document.getElementById('subject-filter');
+    const classSemesterFilter = document.getElementById('class-semester-filter');
+    
+    if (educationLevelFilter) {
+        educationLevelFilter.addEventListener('change', function() {
+            updateFilterOptions();
+        });
+    }
+    
+    // Also initialize for upload form
+    const uploadEducationLevel = document.getElementById('book-education-level');
+    const uploadSubject = document.getElementById('book-subject');
+    const uploadClassSemester = document.getElementById('book-class-semester');
+    
+    if (uploadEducationLevel) {
+        uploadEducationLevel.addEventListener('change', function() {
+            updateUploadFormOptions();
+        });
+    }
+}
+
+function updateFilterOptions() {
+    const educationLevel = document.getElementById('education-level-filter').value;
+    const subjectFilter = document.getElementById('subject-filter');
+    const classSemesterFilter = document.getElementById('class-semester-filter');
+    
+    // Reset selections
+    subjectFilter.value = '';
+    classSemesterFilter.value = '';
+    
+    if (educationLevel === 'school') {
+        // Show school subjects and classes
+        subjectFilter.querySelector('optgroup[label="School Subjects"]').style.display = 'block';
+        subjectFilter.querySelector('optgroup[label="College Subjects"]').style.display = 'none';
+        classSemesterFilter.querySelector('optgroup[label="School Classes"]').style.display = 'block';
+        classSemesterFilter.querySelector('optgroup[label="College Semesters"]').style.display = 'none';
+    } else if (educationLevel === 'college') {
+        // Show college subjects and semesters
+        subjectFilter.querySelector('optgroup[label="School Subjects"]').style.display = 'none';
+        subjectFilter.querySelector('optgroup[label="College Subjects"]').style.display = 'block';
+        classSemesterFilter.querySelector('optgroup[label="School Classes"]').style.display = 'none';
+        classSemesterFilter.querySelector('optgroup[label="College Semesters"]').style.display = 'block';
+    } else {
+        // Show all options
+        subjectFilter.querySelector('optgroup[label="School Subjects"]').style.display = 'block';
+        subjectFilter.querySelector('optgroup[label="College Subjects"]').style.display = 'block';
+        classSemesterFilter.querySelector('optgroup[label="School Classes"]').style.display = 'block';
+        classSemesterFilter.querySelector('optgroup[label="College Semesters"]').style.display = 'block';
+    }
+}
+
+function updateUploadFormOptions() {
+    const educationLevel = document.getElementById('book-education-level').value;
+    const uploadSubject = document.getElementById('book-subject');
+    const uploadClassSemester = document.getElementById('book-class-semester');
+    
+    // Reset selections
+    uploadSubject.value = '';
+    uploadClassSemester.value = '';
+    
+    if (educationLevel === 'school') {
+        // Show school subjects and classes
+        uploadSubject.querySelector('optgroup[label="School Subjects"]').style.display = 'block';
+        uploadSubject.querySelector('optgroup[label="College Subjects"]').style.display = 'none';
+        uploadClassSemester.querySelector('optgroup[label="School Classes"]').style.display = 'block';
+        uploadClassSemester.querySelector('optgroup[label="College Semesters"]').style.display = 'none';
+    } else if (educationLevel === 'college') {
+        // Show college subjects and semesters
+        uploadSubject.querySelector('optgroup[label="School Subjects"]').style.display = 'none';
+        uploadSubject.querySelector('optgroup[label="College Subjects"]').style.display = 'block';
+        uploadClassSemester.querySelector('optgroup[label="School Classes"]').style.display = 'none';
+        uploadClassSemester.querySelector('optgroup[label="College Semesters"]').style.display = 'block';
+    } else {
+        // Show all options
+        uploadSubject.querySelector('optgroup[label="School Subjects"]').style.display = 'block';
+        uploadSubject.querySelector('optgroup[label="College Subjects"]').style.display = 'block';
+        uploadClassSemester.querySelector('optgroup[label="School Classes"]').style.display = 'block';
+        uploadClassSemester.querySelector('optgroup[label="College Semesters"]').style.display = 'block';
+    }
+}
+
+// Password Strength Checker
+function checkPasswordStrength(password) {
+    const strengthBar = document.querySelector('.strength-fill');
+    const strengthText = document.querySelector('.strength-text');
+    
+    if (!strengthBar || !strengthText) return;
+    
+    let strength = 0;
+    let strengthLabel = '';
+    
+    if (password.length >= 8) strength += 1;
+    if (password.match(/[a-z]/)) strength += 1;
+    if (password.match(/[A-Z]/)) strength += 1;
+    if (password.match(/[0-9]/)) strength += 1;
+    if (password.match(/[^a-zA-Z0-9]/)) strength += 1;
+    
+    strengthBar.className = 'strength-fill';
+    
+    switch (strength) {
+        case 0:
+        case 1:
+            strengthBar.classList.add('weak');
+            strengthLabel = 'Weak';
+            break;
+        case 2:
+            strengthBar.classList.add('fair');
+            strengthLabel = 'Fair';
+            break;
+        case 3:
+            strengthBar.classList.add('good');
+            strengthLabel = 'Good';
+            break;
+        case 4:
+        case 5:
+            strengthBar.classList.add('strong');
+            strengthLabel = 'Strong';
+            break;
+    }
+    
+    strengthText.textContent = strengthLabel;
+}
+
+// Initialize password strength checking
+function initializePasswordStrength() {
+    const passwordInput = document.getElementById('signup-password');
+    if (passwordInput) {
+        passwordInput.addEventListener('input', function() {
+            checkPasswordStrength(this.value);
+        });
+    }
+}
+
+// Password confirmation validation
+function initializePasswordConfirmation() {
+    const passwordInput = document.getElementById('signup-password');
+    const confirmInput = document.getElementById('signup-password-confirm');
+    
+    if (passwordInput && confirmInput) {
+        function validatePasswords() {
+            if (confirmInput.value && passwordInput.value !== confirmInput.value) {
+                confirmInput.setCustomValidity('Passwords do not match');
+            } else {
+                confirmInput.setCustomValidity('');
+            }
+        }
+        
+        passwordInput.addEventListener('input', validatePasswords);
+        confirmInput.addEventListener('input', validatePasswords);
+    }
+}
+
+// Initialize additional auth features
+function initializeAuthFeatures() {
+    initializePasswordStrength();
+    initializePasswordConfirmation();
+}
+
+// Update the main initialization function
+function initializeApp() {
+    // Load sample books
+    books = [...sampleBooks];
+    
+    // Initialize sections
+    loadBooks();
+    initializeUploadForm();
+    initializeChat();
+    initializeProfile();
+    initializeSearchFilters();
+    initializeEducationLevelFilter();
+    initializeAuthFeatures();
+    initializeScanner();
+    
+    // Add scroll functionality
+    addScrollFunctionality();
+    
+    // Initialize scroll to top button
+    initializeScrollToTop();
+}
+
+// Test function to verify authentication is working
+function testAuth() {
+    console.log('Testing authentication...');
+    
+    // Test opening auth modal
+    if (window.openAuthModalFromSupabase) {
+        console.log('Auth modal function found');
+        window.openAuthModalFromSupabase('signup');
+    } else {
+        console.log('Auth modal function not found');
+    }
+}
+
+// Test function for debugging chat
+function testChat() {
+    console.log('Testing chat...');
+    
+    // Simulate requesting a book to create a chat contact
+    const sampleBook = books.find(book => book.uploadedBy !== currentUser?.id);
+    if (sampleBook) {
+        // Simulate book request
+        const ownerId = sampleBook.uploadedBy;
+        const ownerName = getOwnerName(ownerId);
+        
+        if (!chatContacts.find(contact => contact.id === ownerId)) {
+            chatContacts.push({
+                id: ownerId,
+                name: ownerName,
+                lastMessage: 'Book request sent',
+                bookTitle: sampleBook.title,
+                requestTime: new Date().toLocaleTimeString(),
+                status: 'pending'
+            });
+        }
+        
+        // Set current chat
+        currentChat = ownerId;
+        updateChatUI();
+        
+        // Scroll to chat section
+        document.getElementById('chat').scrollIntoView({ behavior: 'smooth' });
+        
+        alert(`Demo: Chat created with ${ownerName} about "${sampleBook.title}"`);
+    } else {
+        alert('No books available for chat demo');
+    }
+}
+
+// Scroll to Top Functionality
+function initializeScrollToTop() {
+    const scrollToTopBtn = document.getElementById('scroll-to-top');
+    
+    if (!scrollToTopBtn) return;
+    
+    // Show/hide button based on scroll position
+    window.addEventListener('scroll', () => {
+        if (window.pageYOffset > 300) {
+            scrollToTopBtn.classList.add('show');
+        } else {
+            scrollToTopBtn.classList.remove('show');
+        }
+    });
+    
+    // Smooth scroll to top when clicked
+    scrollToTopBtn.addEventListener('click', scrollToTop);
+}
+
+// Scroll to top function
+function scrollToTop() {
+    window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+    });
+}
+
+// Camera Scanner Functions
+function openCameraScanner() {
+    const scannerModal = document.querySelector('.scanner-modal');
+    if (scannerModal) {
+        scannerModal.classList.add('active');
+        
+        // Add event listeners for scanner modal
+        const closeBtn = scannerModal.querySelector('.close-scanner');
+        if (closeBtn) {
+            closeBtn.addEventListener('click', closeCameraScanner);
+        }
+        
+        // Close on background click
+        scannerModal.addEventListener('click', function(e) {
+            if (e.target === scannerModal) {
+                closeCameraScanner();
+            }
+        });
+    }
+}
+
+function closeCameraScanner() {
+    const scannerModal = document.querySelector('.scanner-modal');
+    if (scannerModal) {
+        scannerModal.classList.remove('active');
+    }
+}
+
+function captureID() {
+    // Simulate ID scanning process
+    alert('ID scanning feature is in demo mode. In a real application, this would use the device camera to scan and extract text from the student ID card.');
+    
+    // For demo purposes, fill in a sample student ID
+    const studentIdInput = document.getElementById('signup-student-id');
+    if (studentIdInput) {
+        const sampleIds = ['STU2024001', 'COLLEGE123', 'UNIV456789', 'ID2024ABC'];
+        const randomId = sampleIds[Math.floor(Math.random() * sampleIds.length)];
+        studentIdInput.value = randomId;
+    }
+    
+    closeCameraScanner();
+    
+    // Show success message
+    setTimeout(() => {
+        alert('Student ID scanned successfully! ✅\nID: ' + (studentIdInput ? studentIdInput.value : 'Sample ID'));
+    }, 500);
+}
+
+// Initialize scanner functionality
+function initializeScanner() {
+    // Add keyboard support for scanner modal
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            const scannerModal = document.querySelector('.scanner-modal');
+            if (scannerModal && scannerModal.classList.contains('active')) {
+                closeCameraScanner();
+            }
+        }
+    });
+}
+
+// Make functions available globally
+window.openCameraScanner = openCameraScanner;
+window.closeCameraScanner = closeCameraScanner;
+window.captureID = captureID;
+
+// Make test functions available globally
+window.testAuth = testAuth;
+window.testChat = testChat;
+window.scrollToTop = scrollToTop;
+
+// Export functions for use in supabase.js
+window.setCurrentUser = setCurrentUser;
+window.openAuthModal = function(type) {
+    // This will be handled by supabase.js
+    if (window.openAuthModalFromSupabase) {
+        window.openAuthModalFromSupabase(type);
+    }
+}; 

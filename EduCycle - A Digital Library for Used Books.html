@@ -1,0 +1,943 @@
+<!DOCTYPE html>
+<!-- saved from url=(0036)https://educyclejourney.netlify.app/ -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduCycle - A Digital Library for Used Books</title>
+    <link rel="stylesheet" href="./EduCycle - A Digital Library for Used Books_files/all.min.css">
+    <link rel="stylesheet" href="./EduCycle - A Digital Library for Used Books_files/styles.css">
+    <script src="./EduCycle - A Digital Library for Used Books_files/supabase-js@2"></script>
+</head>
+<body>
+    <!-- Scrolling Marquee -->
+    <div class="marquee-container">
+        <div class="marquee-text">
+            <span>Your old book could be someone's new beginning !</span>
+        </div>
+    </div>
+    
+    <!-- Header -->
+    <header class="header">
+        <nav class="navbar">
+            <div class="nav-brand">
+                <a href="https://educyclejourney.netlify.app/#" class="logo-link">
+                    <img src="./EduCycle - A Digital Library for Used Books_files/logo.png" alt="EduCycle Logo" class="logo-image" onerror="this.style.display=&#39;none&#39;; this.nextElementSibling.style.display=&#39;inline-flex&#39;;">
+                    <h1 class="logo-text"><i class="fas fa-book-open"></i> EduCycle</h1>
+                </a>
+            </div>
+            <div class="nav-right">
+                <div class="nav-links">
+                    <ul>
+                        <li><a href="https://educyclejourney.netlify.app/#" class="active">Home</a></li>
+                        <li><a href="https://educyclejourney.netlify.app/#books">Books</a></li>
+                        <li><a href="https://educyclejourney.netlify.app/#upload">Upload</a></li>
+                        <li><a href="https://educyclejourney.netlify.app/#chat">Chat</a></li>
+                        <li><a href="https://educyclejourney.netlify.app/#profile">Profile</a></li>
+                    </ul>
+                </div>
+                <div class="nav-icons">
+                    <a href="https://educyclejourney.netlify.app/#"><i class="fas fa-search"></i></a>
+                    <div class="user-menu-container">
+                        <a href="https://educyclejourney.netlify.app/#" class="user-icon"><i class="fas fa-user"></i></a>
+                        <div class="user-menu">
+                            <div class="user-info">
+                                <p class="user-name">Guest</p>
+                                <p class="user-email">Not signed in</p>
+                            </div>
+                            <ul>
+                                <li><a href="https://educyclejourney.netlify.app/#" id="signin-link" style="display: block;">Sign In</a></li>
+                                <li><a href="https://educyclejourney.netlify.app/#" id="signup-link" style="display: block;">Sign Up</a></li>
+                                <li><a href="https://educyclejourney.netlify.app/#" id="profile-link" style="display: none;">My Profile</a></li>
+                                <li><a href="https://educyclejourney.netlify.app/#" id="signout-link" style="display: none;">Sign Out</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <a href="https://educyclejourney.netlify.app/#" class="notification-icon"><i class="fas fa-bell"></i><span class="notification-count">0</span></a>
+                </div>
+            </div>
+            <div class="mobile-menu-toggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="hero-background">
+                <div class="hero-overlay"></div>
+            </div>
+            <div class="container">
+                <div class="hero-content">
+                    <div class="hero-text">
+                        <h1 class="hero-title">Old Books, New Journey</h1>
+                        <p class="hero-subtitle">Our platform connects students to share books, reduce costs, and promote sustainability through easy book exchange.</p>
+                        <div class="hero-buttons">
+                            <button class="btn btn-primary" onclick="scrollToSection(&#39;books&#39;)">Browse Books</button>
+                            <button class="btn btn-secondary" onclick="scrollToSection(&#39;upload&#39;)">Upload Books</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Key Features Section -->
+        <section class="features">
+            <div class="container">
+                <h2><i class="fas fa-wrench"></i> Key Features</h2>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-number">1</div>
+                        <h3>User Registration/Login</h3>
+                        <p>Students can create profiles using their email or college ID.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-number">2</div>
+                        <h3>Upload Books</h3>
+                        <p>Donors can upload details of books, including title, subject, author, semester, and photos.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-number">3</div>
+                        <h3>Search &amp; Filter</h3>
+                        <p>Students can search for books by subject, semester, course, or location.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-number">4</div>
+                        <h3>Book Request/Reserve</h3>
+                        <p>Interested users can request or reserve books from donors.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-number">5</div>
+                        <h3>Chat/Messaging System</h3>
+                        <p>Secure in-app messaging system for communication related to book exchange.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-number">6</div>
+                        <h3>Donation or Selling</h3>
+                        <p>Users can offer books for free or at low prices.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-number">7</div>
+                        <h3>Pickup/Drop Coordination</h3>
+                        <p>Options for coordinating meetings or courier services for book exchange.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-number">8</div>
+                        <h3>Sustainability Score</h3>
+                        <p>Track how many books you've donated or reused to encourage eco-conscious behavior.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Books Section -->
+        <section id="books" class="books-section">
+            <div class="container">
+                <h2>Available Books</h2>
+                <div class="search-filters">
+                    <input type="text" id="search-books" placeholder="Search books by title, author, or subject...">
+                    <select id="education-level-filter">
+                        <option value="">All Levels</option>
+                        <option value="school">School (Class 1-10)</option>
+                        <option value="college">College/University</option>
+                    </select>
+                    <select id="subject-filter">
+                        <option value="">All Subjects</option>
+                        <optgroup label="School Subjects">
+                            <option value="mathematics-school">Mathematics</option>
+                            <option value="science-school">Science</option>
+                            <option value="social-studies">Social Studies</option>
+                            <option value="english">English</option>
+                            <option value="hindi">Hindi</option>
+                            <option value="sanskrit">Sanskrit</option>
+                            <option value="physics-school">Physics</option>
+                            <option value="chemistry-school">Chemistry</option>
+                            <option value="biology-school">Biology</option>
+                        </optgroup>
+                        <optgroup label="College Subjects">
+                            <option value="computer-science">Computer Science</option>
+                            <option value="mathematics">Mathematics</option>
+                            <option value="physics">Physics</option>
+                            <option value="chemistry">Chemistry</option>
+                            <option value="biology">Biology</option>
+                            <option value="engineering">Engineering</option>
+                        </optgroup>
+                    </select>
+                    <select id="class-semester-filter">
+                        <option value="">All Classes/Semesters</option>
+                        <optgroup label="School Classes">
+                            <option value="class-1">Class 1</option>
+                            <option value="class-2">Class 2</option>
+                            <option value="class-3">Class 3</option>
+                            <option value="class-4">Class 4</option>
+                            <option value="class-5">Class 5</option>
+                            <option value="class-6">Class 6</option>
+                            <option value="class-7">Class 7</option>
+                            <option value="class-8">Class 8</option>
+                            <option value="class-9">Class 9</option>
+                            <option value="class-10">Class 10</option>
+                            <option value="class-11">Class 11</option>
+                            <option value="class-12">Class 12</option>
+                        </optgroup>
+                        <optgroup label="College Semesters">
+                            <option value="semester-1">Semester 1</option>
+                            <option value="semester-2">Semester 2</option>
+                            <option value="semester-3">Semester 3</option>
+                            <option value="semester-4">Semester 4</option>
+                            <option value="semester-5">Semester 5</option>
+                            <option value="semester-6">Semester 6</option>
+                            <option value="semester-7">Semester 7</option>
+                            <option value="semester-8">Semester 8</option>
+                        </optgroup>
+                    </select>
+                </div>
+                <div class="books-grid" id="books-grid"><div class="book-card">
+        <img src="./EduCycle - A Digital Library for Used Books_files/photo-1481627834876-b7833e8f5570" alt="Introduction to Computer Science" class="book-image">
+        <div class="book-info">
+            <h3 class="book-title">Introduction to Computer Science</h3>
+            <p class="book-author">by John Smith</p>
+            <div class="book-details">
+                <span class="book-subject">Computer Science</span>
+                <span class="book-level">College</span>
+                <span class="book-class-semester">Semester 1</span>
+            </div>
+            <p class="book-price">Free</p>
+            <div class="book-actions">
+                <button class="btn-request" onclick="requestBook(1)">Request Book</button>
+                <button class="btn-chat" onclick="startChat(&#39;user1&#39;)">Chat</button>
+            </div>
+        </div>
+    </div><div class="book-card">
+        <img src="./EduCycle - A Digital Library for Used Books_files/photo-1544716278-ca5e3f4abd8c" alt="Calculus: Early Transcendentals" class="book-image">
+        <div class="book-info">
+            <h3 class="book-title">Calculus: Early Transcendentals</h3>
+            <p class="book-author">by James Stewart</p>
+            <div class="book-details">
+                <span class="book-subject">Mathematics</span>
+                <span class="book-level">College</span>
+                <span class="book-class-semester">Semester 2</span>
+            </div>
+            <p class="book-price">Free</p>
+            <div class="book-actions">
+                <button class="btn-request" onclick="requestBook(2)">Request Book</button>
+                <button class="btn-chat" onclick="startChat(&#39;user2&#39;)">Chat</button>
+            </div>
+        </div>
+    </div><div class="book-card">
+        <img src="./EduCycle - A Digital Library for Used Books_files/photo-1507003211169-0a1dd7228f2d" alt="Physics for Scientists and Engineers" class="book-image">
+        <div class="book-info">
+            <h3 class="book-title">Physics for Scientists and Engineers</h3>
+            <p class="book-author">by Raymond A. Serway</p>
+            <div class="book-details">
+                <span class="book-subject">Physics</span>
+                <span class="book-level">College</span>
+                <span class="book-class-semester">Semester 1</span>
+            </div>
+            <p class="book-price">Free</p>
+            <div class="book-actions">
+                <button class="btn-request" onclick="requestBook(3)">Request Book</button>
+                <button class="btn-chat" onclick="startChat(&#39;user3&#39;)">Chat</button>
+            </div>
+        </div>
+    </div><div class="book-card">
+        <img src="./EduCycle - A Digital Library for Used Books_files/photo-1512820790803-83ca734da794" alt="Organic Chemistry" class="book-image">
+        <div class="book-info">
+            <h3 class="book-title">Organic Chemistry</h3>
+            <p class="book-author">by Paula Yurkanis Bruice</p>
+            <div class="book-details">
+                <span class="book-subject">Chemistry</span>
+                <span class="book-level">College</span>
+                <span class="book-class-semester">Semester 3</span>
+            </div>
+            <p class="book-price">Free</p>
+            <div class="book-actions">
+                <button class="btn-request" onclick="requestBook(4)">Request Book</button>
+                <button class="btn-chat" onclick="startChat(&#39;user4&#39;)">Chat</button>
+            </div>
+        </div>
+    </div><div class="book-card">
+        <img src="./EduCycle - A Digital Library for Used Books_files/photo-1544716278-ca5e3f4abd8c" alt="Mathematics for Class 10" class="book-image">
+        <div class="book-info">
+            <h3 class="book-title">Mathematics for Class 10</h3>
+            <p class="book-author">by NCERT</p>
+            <div class="book-details">
+                <span class="book-subject">Mathematics</span>
+                <span class="book-level">School</span>
+                <span class="book-class-semester">Class 10</span>
+            </div>
+            <p class="book-price">Free</p>
+            <div class="book-actions">
+                <button class="btn-request" onclick="requestBook(5)">Request Book</button>
+                <button class="btn-chat" onclick="startChat(&#39;user5&#39;)">Chat</button>
+            </div>
+        </div>
+    </div><div class="book-card">
+        <img src="./EduCycle - A Digital Library for Used Books_files/photo-1507003211169-0a1dd7228f2d" alt="Science Textbook Class 8" class="book-image">
+        <div class="book-info">
+            <h3 class="book-title">Science Textbook Class 8</h3>
+            <p class="book-author">by NCERT</p>
+            <div class="book-details">
+                <span class="book-subject">Science</span>
+                <span class="book-level">School</span>
+                <span class="book-class-semester">Class 8</span>
+            </div>
+            <p class="book-price">Free</p>
+            <div class="book-actions">
+                <button class="btn-request" onclick="requestBook(6)">Request Book</button>
+                <button class="btn-chat" onclick="startChat(&#39;user6&#39;)">Chat</button>
+            </div>
+        </div>
+    </div><div class="book-card">
+        <img src="./EduCycle - A Digital Library for Used Books_files/photo-1512820790803-83ca734da794" alt="English Literature Class 9" class="book-image">
+        <div class="book-info">
+            <h3 class="book-title">English Literature Class 9</h3>
+            <p class="book-author">by NCERT</p>
+            <div class="book-details">
+                <span class="book-subject">English</span>
+                <span class="book-level">School</span>
+                <span class="book-class-semester">Class 9</span>
+            </div>
+            <p class="book-price">Free</p>
+            <div class="book-actions">
+                <button class="btn-request" onclick="requestBook(7)">Request Book</button>
+                <button class="btn-chat" onclick="startChat(&#39;user7&#39;)">Chat</button>
+            </div>
+        </div>
+    </div><div class="book-card">
+        <img src="./EduCycle - A Digital Library for Used Books_files/photo-1481627834876-b7833e8f5570" alt="Hindi Textbook Class 7" class="book-image">
+        <div class="book-info">
+            <h3 class="book-title">Hindi Textbook Class 7</h3>
+            <p class="book-author">by NCERT</p>
+            <div class="book-details">
+                <span class="book-subject">Hindi</span>
+                <span class="book-level">School</span>
+                <span class="book-class-semester">Class 7</span>
+            </div>
+            <p class="book-price">Free</p>
+            <div class="book-actions">
+                <button class="btn-request" onclick="requestBook(8)">Request Book</button>
+                <button class="btn-chat" onclick="startChat(&#39;user8&#39;)">Chat</button>
+            </div>
+        </div>
+    </div><div class="book-card">
+        <img src="./EduCycle - A Digital Library for Used Books_files/photo-1544716278-ca5e3f4abd8c" alt="Social Studies Class 6" class="book-image">
+        <div class="book-info">
+            <h3 class="book-title">Social Studies Class 6</h3>
+            <p class="book-author">by NCERT</p>
+            <div class="book-details">
+                <span class="book-subject">Social Studies</span>
+                <span class="book-level">School</span>
+                <span class="book-class-semester">Class 6</span>
+            </div>
+            <p class="book-price">Free</p>
+            <div class="book-actions">
+                <button class="btn-request" onclick="requestBook(9)">Request Book</button>
+                <button class="btn-chat" onclick="startChat(&#39;user9&#39;)">Chat</button>
+            </div>
+        </div>
+    </div><div class="book-card">
+        <img src="./EduCycle - A Digital Library for Used Books_files/photo-1507003211169-0a1dd7228f2d" alt="Physics Class 11" class="book-image">
+        <div class="book-info">
+            <h3 class="book-title">Physics Class 11</h3>
+            <p class="book-author">by NCERT</p>
+            <div class="book-details">
+                <span class="book-subject">Physics</span>
+                <span class="book-level">School</span>
+                <span class="book-class-semester">Class 11</span>
+            </div>
+            <p class="book-price">Free</p>
+            <div class="book-actions">
+                <button class="btn-request" onclick="requestBook(10)">Request Book</button>
+                <button class="btn-chat" onclick="startChat(&#39;user10&#39;)">Chat</button>
+            </div>
+        </div>
+    </div><div class="book-card">
+        <img src="./EduCycle - A Digital Library for Used Books_files/photo-1512820790803-83ca734da794" alt="Chemistry Class 12" class="book-image">
+        <div class="book-info">
+            <h3 class="book-title">Chemistry Class 12</h3>
+            <p class="book-author">by NCERT</p>
+            <div class="book-details">
+                <span class="book-subject">Chemistry</span>
+                <span class="book-level">School</span>
+                <span class="book-class-semester">Class 12</span>
+            </div>
+            <p class="book-price">Free</p>
+            <div class="book-actions">
+                <button class="btn-request" onclick="requestBook(11)">Request Book</button>
+                <button class="btn-chat" onclick="startChat(&#39;user11&#39;)">Chat</button>
+            </div>
+        </div>
+    </div><div class="book-card">
+        <img src="./EduCycle - A Digital Library for Used Books_files/photo-1481627834876-b7833e8f5570" alt="Biology Class 10" class="book-image">
+        <div class="book-info">
+            <h3 class="book-title">Biology Class 10</h3>
+            <p class="book-author">by NCERT</p>
+            <div class="book-details">
+                <span class="book-subject">Biology</span>
+                <span class="book-level">School</span>
+                <span class="book-class-semester">Class 10</span>
+            </div>
+            <p class="book-price">Free</p>
+            <div class="book-actions">
+                <button class="btn-request" onclick="requestBook(12)">Request Book</button>
+                <button class="btn-chat" onclick="startChat(&#39;user12&#39;)">Chat</button>
+            </div>
+        </div>
+    </div><div class="book-card">
+        <img src="./EduCycle - A Digital Library for Used Books_files/photo-1509228468518-180dd4864904" alt="Advanced Mathematics" class="book-image">
+        <div class="book-info">
+            <h3 class="book-title">Advanced Mathematics</h3>
+            <p class="book-author">by Demo User</p>
+            <div class="book-details">
+                <span class="book-subject">Mathematics</span>
+                <span class="book-level">College</span>
+                <span class="book-class-semester">Semester 3</span>
+            </div>
+            <p class="book-price">Free</p>
+            <div class="book-actions">
+                <button class="btn-request" onclick="requestBook(13)">Request Book</button>
+                <button class="btn-chat" onclick="startChat(&#39;demo-user&#39;)">Chat</button>
+            </div>
+        </div>
+    </div><div class="book-card">
+        <img src="./EduCycle - A Digital Library for Used Books_files/photo-1516321318423-f06f85e504b3" alt="Programming Fundamentals" class="book-image">
+        <div class="book-info">
+            <h3 class="book-title">Programming Fundamentals</h3>
+            <p class="book-author">by Demo User</p>
+            <div class="book-details">
+                <span class="book-subject">Computer Science</span>
+                <span class="book-level">College</span>
+                <span class="book-class-semester">Semester 2</span>
+            </div>
+            <p class="book-price">Free</p>
+            <div class="book-actions">
+                <button class="btn-request" onclick="requestBook(14)">Request Book</button>
+                <button class="btn-chat" onclick="startChat(&#39;demo-user&#39;)">Chat</button>
+            </div>
+        </div>
+    </div><div class="book-card">
+        <img src="./EduCycle - A Digital Library for Used Books_files/photo-1481627834876-b7833e8f5570" alt="English Grammar Class 8" class="book-image">
+        <div class="book-info">
+            <h3 class="book-title">English Grammar Class 8</h3>
+            <p class="book-author">by Demo User</p>
+            <div class="book-details">
+                <span class="book-subject">English</span>
+                <span class="book-level">School</span>
+                <span class="book-class-semester">Class 8</span>
+            </div>
+            <p class="book-price">Free</p>
+            <div class="book-actions">
+                <button class="btn-request" onclick="requestBook(15)">Request Book</button>
+                <button class="btn-chat" onclick="startChat(&#39;demo-user&#39;)">Chat</button>
+            </div>
+        </div>
+    </div></div>
+            </div>
+        </section>
+
+        <!-- Upload Section -->
+        <section id="upload" class="upload-section">
+            <div class="container">
+                <h2>Upload Your Books</h2>
+                <div class="upload-container">
+                    <form id="upload-form" class="upload-form">
+                        <div class="form-group">
+                            <label for="book-title">Book Title</label>
+                            <input type="text" id="book-title" required="">
+                        </div>
+                        <div class="form-group">
+                            <label for="book-author">Author</label>
+                            <input type="text" id="book-author" required="">
+                        </div>
+                        <div class="form-group">
+                            <label for="book-education-level">Education Level</label>
+                            <select id="book-education-level" required="">
+                                <option value="">Select Education Level</option>
+                                <option value="school">School (Class 1-10)</option>
+                                <option value="college">College/University</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="book-subject">Subject</label>
+                            <select id="book-subject" required="">
+                                <option value="">Select Subject</option>
+                                <optgroup label="School Subjects" id="school-subjects">
+                                    <option value="mathematics-school">Mathematics</option>
+                                    <option value="science-school">Science</option>
+                                    <option value="social-studies">Social Studies</option>
+                                    <option value="english">English</option>
+                                    <option value="hindi">Hindi</option>
+                                    <option value="sanskrit">Sanskrit</option>
+                                    <option value="physics-school">Physics</option>
+                                    <option value="chemistry-school">Chemistry</option>
+                                    <option value="biology-school">Biology</option>
+                                </optgroup>
+                                <optgroup label="College Subjects" id="college-subjects">
+                                    <option value="computer-science">Computer Science</option>
+                                    <option value="mathematics">Mathematics</option>
+                                    <option value="physics">Physics</option>
+                                    <option value="chemistry">Chemistry</option>
+                                    <option value="biology">Biology</option>
+                                    <option value="engineering">Engineering</option>
+                                </optgroup>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="book-class-semester">Class/Semester</label>
+                            <select id="book-class-semester" required="">
+                                <option value="">Select Class/Semester</option>
+                                <optgroup label="School Classes" id="school-classes">
+                                    <option value="class-1">Class 1</option>
+                                    <option value="class-2">Class 2</option>
+                                    <option value="class-3">Class 3</option>
+                                    <option value="class-4">Class 4</option>
+                                    <option value="class-5">Class 5</option>
+                                    <option value="class-6">Class 6</option>
+                                    <option value="class-7">Class 7</option>
+                                    <option value="class-8">Class 8</option>
+                                    <option value="class-9">Class 9</option>
+                                    <option value="class-10">Class 10</option>
+                                    <option value="class-11">Class 11</option>
+                                    <option value="class-12">Class 12</option>
+                                </optgroup>
+                                <optgroup label="College Semesters" id="college-semesters">
+                                    <option value="semester-1">Semester 1</option>
+                                    <option value="semester-2">Semester 2</option>
+                                    <option value="semester-3">Semester 3</option>
+                                    <option value="semester-4">Semester 4</option>
+                                    <option value="semester-5">Semester 5</option>
+                                    <option value="semester-6">Semester 6</option>
+                                    <option value="semester-7">Semester 7</option>
+                                    <option value="semester-8">Semester 8</option>
+                                </optgroup>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="book-price">Price</label>
+                            <input type="hidden" id="book-price" value="0">
+                            <div class="free-notice">
+                                <i class="fas fa-gift"></i> All books on EduCycle are FREE for educational purposes
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="book-description">Description</label>
+                            <textarea id="book-description" rows="4" placeholder="Describe the book condition, edition, etc."></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="book-images">Upload Images</label>
+                            <input type="file" id="book-images" multiple="" accept="image/*">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Upload Book</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <!-- Benefits Section -->
+        <section class="benefits">
+            <div class="container">
+                <div class="benefits-content">
+                    <div class="benefits-text">
+                        <h2><i class="fas fa-seedling"></i> Benefits</h2>
+                        <ul>
+                            <li>Reduces the financial burden on underprivileged students</li>
+                            <li>Reduces paper waste and supports environmental sustainability</li>
+                            <li>Builds a community of sharing and support among students</li>
+                            <li>Promotes digital responsibility and sustainable practices</li>
+                        </ul>
+                    </div>
+                    <div class="technologies">
+                        <h3><i class="fas fa-user-graduate"></i> Technologies Used</h3>
+                        <div class="tech-grid">
+                            <div class="tech-category">
+                                <h4>Frontend</h4>
+                                <p>HTML, CSS, JavaScript</p>
+                            </div>
+                            <div class="tech-category">
+                                <h4>Backend</h4>
+                                <p>Node.js, Express</p>
+                            </div>
+                            <div class="tech-category">
+                                <h4>Database</h4>
+                                <p>Supabase (PostgreSQL)</p>
+                            </div>
+                            <div class="tech-category">
+                                <h4>Authentication</h4>
+                                <p>Supabase Auth</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Chat Section -->
+        <section id="chat" class="chat-section">
+            <div class="container">
+                <h2>Messages</h2>
+                <div class="chat-container">
+                    <div class="chat-sidebar">
+                        <div class="chat-contacts" id="chat-contacts">
+                <div class="no-contacts">
+                    <i class="fas fa-comments"></i>
+                    <p>No conversations yet</p>
+                    <small>Request a book to start chatting!</small>
+                </div>
+            </div>
+                    </div>
+                    <div class="chat-main">
+                        <div class="chat-header">
+                            <h3 id="chat-recipient">Select a conversation</h3>
+                        </div>
+                        <div class="chat-messages" id="chat-messages">
+                            <!-- Messages will be loaded here -->
+                        </div>
+                        <div class="chat-input">
+                            <input type="text" id="message-input" placeholder="Type your message...">
+                            <button id="send-message"><i class="fas fa-paper-plane"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Profile Section -->
+        <section id="profile" class="profile-section" style="display: none;">
+            <div class="container">
+                <h2>My Profile</h2>
+                <div class="profile-container">
+                    <div class="profile-sidebar">
+                        <div class="profile-menu">
+                            <button class="profile-menu-item active" data-tab="profile-info">
+                                <i class="fas fa-user"></i> Profile Info
+                            </button>
+                            <button class="profile-menu-item" data-tab="my-books">
+                                <i class="fas fa-book"></i> My Books
+                            </button>
+                            <button class="profile-menu-item" data-tab="requests">
+                                <i class="fas fa-handshake"></i> Book Requests
+                            </button>
+                            <button class="profile-menu-item" data-tab="sustainability">
+                                <i class="fas fa-leaf"></i> Sustainability Score
+                            </button>
+                        </div>
+                    </div>
+                    <div class="profile-content">
+                        <!-- Profile Info Tab -->
+                        <div class="profile-tab active" id="profile-info">
+                            <div class="profile-header">
+                                <div class="profile-avatar">
+                                    <img src="https://via.placeholder.com/150" alt="Profile">
+                                    <button class="change-avatar"><i class="fas fa-camera"></i></button>
+                                </div>
+                                <div class="profile-name">
+                                    <h3 id="profile-full-name">Loading...</h3>
+                                    <p id="profile-email">Loading...</p>
+                                </div>
+                            </div>
+                            <form class="profile-form">
+                                <div class="form-group">
+                                    <label>Full Name</label>
+                                    <input type="text" id="edit-full-name" placeholder="Your full name">
+                                </div>
+                                <div class="form-group">
+                                    <label>Email</label>
+                                    <input type="email" id="edit-email" placeholder="Your email">
+                                </div>
+                                <div class="form-group">
+                                    <label>College ID</label>
+                                    <input type="text" id="edit-college-id" placeholder="Your college ID">
+                                </div>
+                                <div class="form-group">
+                                    <label>Role</label>
+                                    <select id="edit-role">
+                                        <option value="student">Student</option>
+                                        <option value="instructor">Instructor</option>
+                                    </select>
+                                </div>
+                                <button type="submit" class="btn">Save Changes</button>
+                            </form>
+                        </div>
+
+                        <!-- My Books Tab -->
+                        <div class="profile-tab" id="my-books">
+                            <h3>My Uploaded Books</h3>
+                            <div class="my-books-list" id="my-books-list">
+                                <p class="no-books">No books uploaded yet</p>
+                            </div>
+                        </div>
+
+                        <!-- Requests Tab -->
+                        <div class="profile-tab" id="requests">
+                            <h3>Book Requests</h3>
+                            <div class="requests-list" id="requests-list">
+                                <p class="no-requests">No requests yet</p>
+                            </div>
+                        </div>
+
+                        <!-- Sustainability Tab -->
+                        <div class="profile-tab" id="sustainability">
+                            <h3>📊 My Statistics</h3>
+                            <div class="sustainability-score">
+                                <div class="score-card">
+                                    <div class="score-icon">📚</div>
+                                    <h4>Books Uploaded</h4>
+                                    <div class="score-number" id="books-donated">0</div>
+                                    <p class="score-description">Books you've shared with the community</p>
+                                </div>
+                                <div class="score-card">
+                                    <div class="score-icon">🎁</div>
+                                    <h4>Books Received</h4>
+                                    <div class="score-number" id="books-received">0</div>
+                                    <p class="score-description">Books you've received from others</p>
+                                </div>
+                                <div class="score-card">
+                                    <div class="score-icon">🌱</div>
+                                    <h4>Environmental Impact</h4>
+                                    <div class="score-number" id="environmental-impact">0 kg CO2</div>
+                                    <p class="score-description">Carbon footprint reduced through sharing</p>
+                                </div>
+                            </div>
+                            
+                            <div class="user-achievements">
+                                <h4>🏆 Achievements</h4>
+                                <div class="achievements-grid">
+                                    <div class="achievement-card" id="first-upload">
+                                        <div class="achievement-icon">🌟</div>
+                                        <h5>First Upload</h5>
+                                        <p>Upload your first book</p>
+                                        <div class="achievement-status">Locked</div>
+                                    </div>
+                                    <div class="achievement-card" id="generous-donor">
+                                        <div class="achievement-icon">💝</div>
+                                        <h5>Generous Donor</h5>
+                                        <p>Upload 5 books</p>
+                                        <div class="achievement-status">Locked</div>
+                                    </div>
+                                    <div class="achievement-card" id="eco-warrior">
+                                        <div class="achievement-icon">🌍</div>
+                                        <h5>Eco Warrior</h5>
+                                        <p>Save 10kg CO2</p>
+                                        <div class="achievement-status">Locked</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Authentication Modal -->
+    <div class="auth-modal">
+        <div class="auth-container">
+            <div class="auth-header">
+                <div class="auth-logo">
+                    <i class="fas fa-book-open"></i>
+                    <h2>EduCycle</h2>
+                </div>
+                <button class="close-auth"><i class="fas fa-times"></i></button>
+            </div>
+            
+            <div class="auth-content">
+                <!-- Sign In Form -->
+                <form id="signin-form" class="auth-form">
+                    <div class="auth-form-header">
+                        <h3 id="auth-title">Welcome Back!</h3>
+                        <p>Sign in to access your books and connect with other students</p>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="signin-email">
+                            <i class="fas fa-envelope"></i> Email Address
+                        </label>
+                        <input type="email" id="signin-email" placeholder="Enter your email" required="">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="signin-password">
+                            <i class="fas fa-lock"></i> Password
+                        </label>
+                        <input type="password" id="signin-password" placeholder="Enter your password" required="">
+                    </div>
+                    
+                    <div class="form-options">
+                        <label class="remember-me">
+                            <input type="checkbox" id="remember-me">
+                            <span>Remember me</span>
+                        </label>
+                        <a href="https://educyclejourney.netlify.app/#" class="forgot-password">Forgot Password?</a>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary auth-btn">
+                        <i class="fas fa-sign-in-alt"></i> Sign In
+                    </button>
+                    
+                    <div class="auth-divider">
+                        <span>or</span>
+                    </div>
+                    
+                    <div class="auth-switch">
+                        <p>Don't have an account? <a href="https://educyclejourney.netlify.app/#" id="switch-to-signup">Create one here</a></p>
+                    </div>
+                </form>
+
+                <!-- Sign Up Form -->
+                <form id="signup-form" class="auth-form" style="display: none;">
+                    <div class="auth-form-header">
+                        <h3 id="auth-title-signup">Join EduCycle!</h3>
+                        <p>Create your account to start sharing and accessing books</p>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="signup-name">
+                            <i class="fas fa-user"></i> Full Name
+                        </label>
+                        <input type="text" id="signup-name" placeholder="Enter your full name" required="">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="signup-email">
+                            <i class="fas fa-envelope"></i> Email Address
+                        </label>
+                        <input type="email" id="signup-email" placeholder="Enter your email" required="">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="signup-username">
+                            <i class="fas fa-at"></i> Username
+                        </label>
+                        <input type="text" id="signup-username" placeholder="Choose a username" required="">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="signup-student-id">
+                            <i class="fas fa-id-card"></i> Student ID / College ID
+                        </label>
+                        <div class="id-input-container">
+                            <input type="text" id="signup-student-id" placeholder="Enter your student ID" required="">
+                            <button type="button" class="scan-btn" onclick="openCameraScanner()">
+                                <i class="fas fa-camera"></i> Scan
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="signup-password">
+                            <i class="fas fa-lock"></i> Password
+                        </label>
+                        <input type="password" id="signup-password" placeholder="Create a strong password" required="">
+                        <div class="password-strength">
+                            <div class="strength-bar">
+                                <div class="strength-fill"></div>
+                            </div>
+                            <span class="strength-text">Password strength</span>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="signup-password-confirm">
+                            <i class="fas fa-lock"></i> Confirm Password
+                        </label>
+                        <input type="password" id="signup-password-confirm" placeholder="Confirm your password" required="">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="role-label">
+                            <i class="fas fa-user-tag"></i> I am a:
+                        </label>
+                        <div class="role-selection">
+                            <label class="role-option">
+                                <input type="radio" name="role" value="student" checked="">
+                                <div class="role-card">
+                                    <i class="fas fa-graduation-cap"></i>
+                                    <span>Student</span>
+                                    <small>Looking for books</small>
+                                </div>
+                            </label>
+                            <label class="role-option">
+                                <input type="radio" name="role" value="instructor">
+                                <div class="role-card">
+                                    <i class="fas fa-chalkboard-teacher"></i>
+                                    <span>Instructor</span>
+                                    <small>Teaching &amp; sharing</small>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="terms-checkbox">
+                            <input type="checkbox" id="agree-terms" required="">
+                            <span>I agree to the <a href="https://educyclejourney.netlify.app/#" target="_blank">Terms of Service</a> and <a href="https://educyclejourney.netlify.app/#" target="_blank">Privacy Policy</a></span>
+                        </label>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary auth-btn">
+                        <i class="fas fa-user-plus"></i> Create Account
+                    </button>
+                    
+                    <div class="auth-divider">
+                        <span>or</span>
+                    </div>
+                    
+                    <div class="auth-switch">
+                        <p>Already have an account? <a href="https://educyclejourney.netlify.app/#" id="switch-to-signin">Sign in here</a></p>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Camera Scanner Modal -->
+    <div class="scanner-modal">
+        <div class="scanner-container">
+            <div class="scanner-header">
+                <h3><i class="fas fa-camera"></i> Scan Student ID</h3>
+                <button class="close-scanner"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="scanner-content">
+                <div class="camera-preview">
+                    <div class="camera-placeholder">
+                        <i class="fas fa-camera"></i>
+                        <p>Camera Preview</p>
+                        <small>Point your camera at the student ID</small>
+                    </div>
+                    <div class="scan-overlay">
+                        <div class="scan-frame"></div>
+                        <p class="scan-instruction">Position the ID card within the frame</p>
+                    </div>
+                </div>
+                <div class="scanner-controls">
+                    <button class="btn btn-secondary" onclick="closeCameraScanner()">Cancel</button>
+                    <button class="btn btn-primary" onclick="captureID()">
+                        <i class="fas fa-camera"></i> Capture
+                    </button>
+                </div>
+                <div class="scanner-help">
+                    <h4>How to scan:</h4>
+                    <ul>
+                        <li>Ensure good lighting</li>
+                        <li>Keep the ID card flat</li>
+                        <li>Position within the frame</li>
+                        <li>Hold steady and capture</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scroll to Top Button -->
+    <button id="scroll-to-top" class="scroll-to-top-btn" onclick="scrollToTop()">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <script src="./EduCycle - A Digital Library for Used Books_files/supabase.js.download"></script>
+    <script src="./EduCycle - A Digital Library for Used Books_files/script.js.download"></script>
+
+ 
+ </body></html>

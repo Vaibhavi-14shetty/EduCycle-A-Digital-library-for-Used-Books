@@ -1,0 +1,335 @@
+// Supabase Client Configuration
+// Replace these with your actual Supabase project credentials
+const SUPABASE_URL = 'https://your-project-id.supabase.co'; // Replace with your Project URL
+const SUPABASE_ANON_KEY = 'your-anon-key'; // Replace with your Anon Key
+
+// Initialize Supabase client
+const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+// DOM Elements
+const authModal = document.querySelector('.auth-modal');
+const closeAuthBtn = document.querySelector('.close-auth');
+const signinForm = document.getElementById('signin-form');
+const signupForm = document.getElementById('signup-form');
+const switchToSignupBtn = document.getElementById('switch-to-signup');
+const switchToSigninBtn = document.getElementById('switch-to-signin');
+const authTitle = document.getElementById('auth-title');
+const userMenu = document.querySelector('.user-menu');
+const userIcon = document.querySelector('.user-icon');
+const signinLink = document.getElementById('signin-link');
+const signupLink = document.getElementById('signup-link');
+const signoutLink = document.getElementById('signout-link');
+const profileLink = document.getElementById('profile-link');
+const userName = document.querySelector('.user-name');
+const userEmail = document.querySelector('.user-email');
+
+// Initialize authentication UI
+function initAuthUI() {
+    // Check if all required elements exist
+    if (!authModal || !signinForm || !signupForm) {
+        console.log('Auth elements not found, retrying...');
+        setTimeout(initAuthUI, 200);
+        return;
+    }
+
+    console.log('Initializing auth UI...');
+    
+    // Check if user is already logged in
+    checkUser();
+
+    // Event Listeners
+    if (userIcon && userMenu) {
+        userIcon.addEventListener('click', (e) => {
+            e.preventDefault();
+            userMenu.classList.toggle('active');
+        });
+    }
+
+    // Close user menu when clicking outside
+    document.addEventListener('click', (e) => {
+        if (!userMenu.contains(e.target) && !userIcon.contains(e.target)) {
+            userMenu.classList.remove('active');
+        }
+    });
+
+    // Sign In Link
+    if (signinLink) {
+        signinLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            openAuthModal('signin');
+            if (userMenu) userMenu.classList.remove('active');
+        });
+    }
+
+    // Sign Up Link
+    if (signupLink) {
+        signupLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            openAuthModal('signup');
+            if (userMenu) userMenu.classList.remove('active');
+        });
+    }
+
+    // Sign Out Link
+    signoutLink.addEventListener('click', (e) => {
+        e.preventDefault();
+        signOut();
+        userMenu.classList.remove('active');
+    });
+
+    // Profile Link
+    profileLink.addEventListener('click', (e) => {
+        e.preventDefault();
+        const profileSection = document.getElementById('profile');
+        if (profileSection) {
+            profileSection.style.display = 'block';
+            profileSection.scrollIntoView({ behavior: 'smooth' });
+        }
+        userMenu.classList.remove('active');
+    });
+
+    // Close Auth Modal
+    closeAuthBtn.addEventListener('click', closeAuthModal);
+
+    // Close modal when clicking outside
+    authModal.addEventListener('click', (e) => {
+        if (e.target === authModal) {
+            closeAuthModal();
+        }
+    });
+
+    // Switch between Sign In and Sign Up forms
+    switchToSignupBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        signinForm.style.display = 'none';
+        signupForm.style.display = 'block';
+        authTitle.textContent = 'Sign Up';
+    });
+
+    switchToSigninBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        signupForm.style.display = 'none';
+        signinForm.style.display = 'block';
+        authTitle.textContent = 'Sign In';
+    });
+
+    // Sign In Form Submission
+    signinForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const email = document.getElementById('signin-email').value;
+        const password = document.getElementById('signin-password').value;
+
+        try {
+            const { data, error } = await supabase.auth.signInWithPassword({
+                email,
+                password
+            });
+
+            if (error) throw error;
+
+            setCurrentUser(data.user);
+            updateUIForLoggedInUser(data.user);
+            closeAuthModal();
+            signinForm.reset();
+        } catch (error) {
+            // For demo purposes, we'll simulate successful signin
+            console.log('Supabase not configured, using demo mode');
+            const userData = {
+                id: 'demo-user',
+                email: email,
+                user_metadata: {
+                    full_name: 'Demo User',
+                    username: 'demouser',
+                    role: 'student'
+                }
+            };
+            
+            // Save to localStorage for persistence
+            localStorage.setItem('demoUser', JSON.stringify(userData));
+            
+            alert('Sign in successful! Welcome back! (Demo Mode)');
+            setCurrentUser(userData);
+            updateUIForLoggedInUser(userData);
+            closeAuthModal();
+            signinForm.reset();
+        }
+    });
+
+    // Sign Up Form Submission
+    signupForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        console.log('Sign up form submitted!');
+        
+        const name = document.getElementById('signup-name').value;
+        const email = document.getElementById('signup-email').value;
+        const username = document.getElementById('signup-username').value;
+        const studentId = document.getElementById('signup-student-id').value;
+        const password = document.getElementById('signup-password').value;
+        const passwordConfirm = document.getElementById('signup-password-confirm').value;
+        const role = document.querySelector('input[name="role"]:checked').value;
+        const agreeTerms = document.getElementById('agree-terms').checked;
+
+        console.log('Form data:', { name, email, username, role, agreeTerms });
+
+        // Validation
+        if (password !== passwordConfirm) {
+            alert('Passwords do not match!');
+            return;
+        }
+
+        if (!agreeTerms) {
+            alert('Please agree to the Terms of Service and Privacy Policy.');
+            return;
+        }
+
+        try {
+            const { data, error } = await supabase.auth.signUp({
+                email,
+                password,
+                options: {
+                    data: {
+                        full_name: name,
+                        username: username,
+                        role: role
+                    }
+                }
+            });
+
+            if (error) throw error;
+
+            // For demo purposes, we'll simulate successful signup
+            const userData = {
+                id: 'demo-user',
+                email: email,
+                user_metadata: {
+                    full_name: name,
+                    username: username,
+                    student_id: studentId,
+                    role: role
+                }
+            };
+            
+            // Save to localStorage for persistence
+            localStorage.setItem('demoUser', JSON.stringify(userData));
+            
+            alert('Sign up successful! Welcome to EduCycle!');
+            setCurrentUser(userData);
+            updateUIForLoggedInUser(userData);
+            closeAuthModal();
+            signupForm.reset();
+        } catch (error) {
+            // For demo purposes, we'll simulate successful signup even if Supabase isn't configured
+            console.log('Supabase not configured, using demo mode');
+            const userData = {
+                id: 'demo-user',
+                email: email,
+                user_metadata: {
+                    full_name: name,
+                    username: username,
+                    student_id: studentId,
+                    role: role
+                }
+            };
+            
+            // Save to localStorage for persistence
+            localStorage.setItem('demoUser', JSON.stringify(userData));
+            
+            alert('Sign up successful! Welcome to EduCycle! (Demo Mode)');
+            setCurrentUser(userData);
+            updateUIForLoggedInUser(userData);
+            closeAuthModal();
+            signupForm.reset();
+        }
+    });
+}
+
+// Check if user is logged in
+async function checkUser() {
+    try {
+        const { data: { user } } = await supabase.auth.getUser();
+        if (user) {
+            setCurrentUser(user);
+            updateUIForLoggedInUser(user);
+        } else {
+            updateUIForLoggedOutUser();
+        }
+    } catch (error) {
+        // For demo purposes, check localStorage for demo user
+        const demoUser = localStorage.getItem('demoUser');
+        if (demoUser) {
+            const userData = JSON.parse(demoUser);
+            setCurrentUser(userData);
+            updateUIForLoggedInUser(userData);
+        } else {
+            updateUIForLoggedOutUser();
+        }
+    }
+}
+
+// Update UI for logged in user
+function updateUIForLoggedInUser(user) {
+    userName.textContent = user.user_metadata.full_name || 'User';
+    userEmail.textContent = user.email;
+    signinLink.style.display = 'none';
+    signupLink.style.display = 'none';
+    signoutLink.style.display = 'block';
+    profileLink.style.display = 'block';
+}
+
+// Update UI for logged out user
+function updateUIForLoggedOutUser() {
+    userName.textContent = 'Guest';
+    userEmail.textContent = 'Not signed in';
+    signinLink.style.display = 'block';
+    signupLink.style.display = 'block';
+    signoutLink.style.display = 'none';
+    profileLink.style.display = 'none';
+}
+
+// Sign Out
+async function signOut() {
+    try {
+        const { error } = await supabase.auth.signOut();
+        if (error) throw error;
+        setCurrentUser(null);
+        updateUIForLoggedOutUser();
+    } catch (error) {
+        // For demo purposes, clear localStorage
+        localStorage.removeItem('demoUser');
+        setCurrentUser(null);
+        updateUIForLoggedOutUser();
+        alert('Signed out successfully!');
+    }
+}
+
+// Open Auth Modal
+function openAuthModal(type = 'signin') {
+    authModal.classList.add('active');
+    if (type === 'signup') {
+        signinForm.style.display = 'none';
+        signupForm.style.display = 'block';
+        authTitle.textContent = 'Sign Up';
+    } else {
+        signupForm.style.display = 'none';
+        signinForm.style.display = 'block';
+        authTitle.textContent = 'Sign In';
+    }
+}
+
+// Close Auth Modal
+function closeAuthModal() {
+    authModal.classList.remove('active');
+    signinForm.reset();
+    signupForm.reset();
+}
+
+// Initialize auth UI when DOM is loaded
+document.addEventListener('DOMContentLoaded', function() {
+    // Wait a bit for other scripts to load
+    setTimeout(initAuthUI, 100);
+});
+
+// Export functions for use in script.js
+window.openAuthModal = openAuthModal;
+window.closeAuthModal = closeAuthModal;
+window.openAuthModalFromSupabase = openAuthModal; 
